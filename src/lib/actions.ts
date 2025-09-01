@@ -11,14 +11,16 @@ export async function getDepartmentSuggestion(description: string) {
         });
 
         if (!response.ok) {
-            throw new Error('Failed to get department suggestion');
+            const errorData = await response.json().catch(() => ({}));
+            console.error('API Error:', response.status, errorData);
+            throw new Error(`Failed to get department suggestion: ${errorData.error || 'Unknown error'}`);
         }
 
         const result = await response.json();
         return result;
     } catch (error) {
         console.error("Error in getDepartmentSuggestion:", error);
-        return { department: null };
+        return { department: null, error: error instanceof Error ? error.message : 'Unknown error' };
     }
 }
 

@@ -84,7 +84,14 @@ export function NewEscalationForm() {
 
   const handleSuggestDepartment = React.useCallback(async () => {
     const description = form.getValues("description");
-    if(description.length < 10) return;
+    if(description.length < 10) {
+      toast({
+        title: "Description too short",
+        description: "Please enter at least 10 characters for AI suggestion.",
+        variant: "destructive",
+      });
+      return;
+    }
     
     setIsSuggesting(true);
     setSuggestion(null);
@@ -94,16 +101,36 @@ export function NewEscalationForm() {
             const validDepartments = settings.departments;
             if (validDepartments.includes(result.department)) {
                  setSuggestion(result.department);
+                 toast({
+                   title: "Department suggested",
+                   description: `AI suggests: ${result.department}`,
+                 });
             } else {
                 console.warn("AI suggested an invalid department:", result.department);
+                toast({
+                  title: "Invalid suggestion",
+                  description: "AI suggested an invalid department. Please select manually.",
+                  variant: "destructive",
+                });
             }
+        } else if (result.error) {
+            toast({
+              title: "AI suggestion failed",
+              description: result.error,
+              variant: "destructive",
+            });
         }
     } catch (error) {
         console.error("Failed to get department suggestion:", error);
+        toast({
+          title: "AI suggestion failed",
+          description: "Unable to get AI suggestion. Please select department manually.",
+          variant: "destructive",
+        });
     } finally {
         setIsSuggesting(false);
     }
-  }, [form, settings.departments]);
+  }, [form, settings.departments, toast]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
