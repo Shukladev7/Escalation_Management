@@ -21,6 +21,8 @@ const nextConfig: NextConfig = {
   },
   // Vercel specific optimizations
   serverExternalPackages: ['firebase-admin'],
+  // Fix for Next.js 15 route groups on Vercel
+  outputFileTracingRoot: process.cwd(),
 };
 
 export default nextConfig;
