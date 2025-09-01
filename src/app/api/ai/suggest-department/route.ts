@@ -4,9 +4,9 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 export async function POST(request: NextRequest) {
   try {
     // Check if API key is available
-    const apiKey = process.env.GOOGLE_AI_API_KEY;
+    const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
-      console.error('GOOGLE_AI_API_KEY environment variable is not set');
+      console.error('GEMINI_API_KEY environment variable is not set');
       return NextResponse.json(
         { error: 'AI service not configured' },
         { status: 500 }
