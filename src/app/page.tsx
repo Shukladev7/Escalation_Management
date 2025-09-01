@@ -38,7 +38,7 @@ export default function LoginPage() {
     setIsFirebaseAvailable(true);
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        router.push('/dashboard');
+        router.replace('/dashboard');
       } else {
         setIsCheckingAuth(false);
       }
@@ -65,7 +65,7 @@ export default function LoginPage() {
           title: "Login Successful",
           description: "Redirecting to your dashboard...",
       });
-      router.push('/dashboard');
+      router.replace('/dashboard');
     } catch (error: any) {
         let errorMessage = "An unknown error occurred.";
         if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
